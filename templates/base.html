@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" class="wa-theme-awesome wa-palette-bright wa-brand-blue wa-dark">
+
+<head>
+    <title>PDF Editor</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <!-- Resizes for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+
+    <!-- Web Awesome -->
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css" />
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/themes/awesome.css" />
+</head>
+
+<body>
+    <main>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+</body>
+
+</html>
