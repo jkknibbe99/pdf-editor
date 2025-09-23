@@ -2,12 +2,54 @@
 
 {% block content %}
 
-<script type="module">
-    import pdfjsDist from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/+esm'
+<!-- pdf.js -->
+<script>
+    const workerSrc = "{{ url_for('static', filename='js/pdfjs-5.4.149-dist/build/pdf.worker.mjs') }}";
 </script>
+<script type="module" src="{{ url_for('static', filename='js/pdfjs-5.4.149-dist/build/pdf.mjs')}}"></script>
 
-<h1>Hello World!</h1>
-<label>Open a PDF</label>
-<input type="file" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
+
+<script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<header>
+    <img width="50" src="{{ url_for('static', filename='images/logo.svg')}}" />
+    <div id="dropdowns">
+        <wa-dropdown>
+            <wa-button slot="trigger">File</wa-button>
+
+            <wa-dropdown-item>
+                <wa-icon slot="icon" name="scissors"></wa-icon>
+                Cut
+            </wa-dropdown-item>
+            <wa-dropdown-item>
+                <wa-icon slot="icon" name="copy"></wa-icon>
+                Copy
+            </wa-dropdown-item>
+            <wa-dropdown-item>
+                <wa-icon slot="icon" name="paste"></wa-icon>
+                Paste
+            </wa-dropdown-item>
+            <wa-divider></wa-divider>
+            <wa-dropdown-item>
+                Show images
+                <wa-dropdown-item slot="submenu" value="show-all-images">Show All Images</wa-dropdown-item>
+                <wa-dropdown-item slot="submenu" value="show-thumbnails">Show Thumbnails</wa-dropdown-item>
+            </wa-dropdown-item>
+            <wa-divider></wa-divider>
+            <wa-dropdown-item type="checkbox" checked>Emoji Shortcuts</wa-dropdown-item>
+            <wa-dropdown-item type="checkbox" checked>Word Wrap</wa-dropdown-item>
+            <wa-divider></wa-divider>
+            <wa-dropdown-item variant="danger">
+                <wa-icon slot="icon" name="trash"></wa-icon>
+                Delete
+            </wa-dropdown-item>
+        </wa-dropdown>
+    </div>
+</header>
+<!-- <label>Open a PDF</label>
+<input id="file-input" type="file" accept=".pdf" />
+<br>
+<canvas id="pdf-canvas"></canvas> -->
 
 {% endblock %}
