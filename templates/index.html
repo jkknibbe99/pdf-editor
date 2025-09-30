@@ -8,13 +8,20 @@
 </script>
 <script type="module" src="{{ url_for('static', filename='js/pdfjs-5.4.149-dist/build/pdf.mjs')}}"></script>
 
+<!-- Google API Loader script -->
+<script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
+<script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
+<!-- Main CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
 
+<!-- Main JS -->
 <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 <header>
     <img width="50" src="{{ url_for('static', filename='images/logo.svg')}}" />
-    <div id="dropdowns">
+    <div id="navbar">
+        <wa-button id="openBtn">Open</wa-button>
         <wa-dropdown>
             <wa-button slot="trigger">File</wa-button>
 
@@ -46,6 +53,10 @@
             </wa-dropdown-item>
         </wa-dropdown>
     </div>
+
+    {% for file in files %}
+        <p>{{ file }}</p>
+    {% endfor %}
 </header>
 <!-- <label>Open a PDF</label>
 <input id="file-input" type="file" accept=".pdf" />
