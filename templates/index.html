@@ -8,56 +8,67 @@
 </script>
 <script type="module" src="{{ url_for('static', filename='js/pdfjs-5.4.149-dist/build/pdf.mjs')}}"></script>
 
+<!-- Main CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
+
+<script>
+    const access_token_url = '{{ url_for("get_access_token") }}';
+    const PICKER_API_KEY = 'AIzaSyDeKzHPZhFyL4S1EbBD58WpsxdRp3qUYgY';
+    const APP_ID = 'pdf-editor-473716';
+</script>
+
+<!-- Main JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 <!-- Google API Loader script -->
 <script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
 <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 
-<!-- Main CSS -->
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
-
-<!-- Main JS -->
-<script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
-
 <header>
-    <img width="50" src="{{ url_for('static', filename='images/logo.svg')}}" />
-    <div id="navbar">
-        <wa-button id="openBtn">Open</wa-button>
-        <wa-dropdown>
-            <wa-button slot="trigger">File</wa-button>
+    <div>
+         <img width="45" src="{{ url_for('static', filename='images/logo.svg')}}" />
+        <div id="navbar">
+            <wa-button id="openBtn">Open</wa-button>
+            <wa-dropdown>
+                <wa-button slot="trigger">File</wa-button>
 
-            <wa-dropdown-item>
-                <wa-icon slot="icon" name="scissors"></wa-icon>
-                Cut
-            </wa-dropdown-item>
-            <wa-dropdown-item>
-                <wa-icon slot="icon" name="copy"></wa-icon>
-                Copy
-            </wa-dropdown-item>
-            <wa-dropdown-item>
-                <wa-icon slot="icon" name="paste"></wa-icon>
-                Paste
-            </wa-dropdown-item>
-            <wa-divider></wa-divider>
-            <wa-dropdown-item>
-                Show images
-                <wa-dropdown-item slot="submenu" value="show-all-images">Show All Images</wa-dropdown-item>
-                <wa-dropdown-item slot="submenu" value="show-thumbnails">Show Thumbnails</wa-dropdown-item>
-            </wa-dropdown-item>
-            <wa-divider></wa-divider>
-            <wa-dropdown-item type="checkbox" checked>Emoji Shortcuts</wa-dropdown-item>
-            <wa-dropdown-item type="checkbox" checked>Word Wrap</wa-dropdown-item>
-            <wa-divider></wa-divider>
-            <wa-dropdown-item variant="danger">
-                <wa-icon slot="icon" name="trash"></wa-icon>
-                Delete
-            </wa-dropdown-item>
-        </wa-dropdown>
+                <wa-dropdown-item>
+                    <wa-icon slot="icon" name="scissors"></wa-icon>
+                    Cut
+                </wa-dropdown-item>
+                <wa-dropdown-item>
+                    <wa-icon slot="icon" name="copy"></wa-icon>
+                    Copy
+                </wa-dropdown-item>
+                <wa-dropdown-item>
+                    <wa-icon slot="icon" name="paste"></wa-icon>
+                    Paste
+                </wa-dropdown-item>
+                <wa-divider></wa-divider>
+                <wa-dropdown-item>
+                    Show images
+                    <wa-dropdown-item slot="submenu" value="show-all-images">Show All Images</wa-dropdown-item>
+                    <wa-dropdown-item slot="submenu" value="show-thumbnails">Show Thumbnails</wa-dropdown-item>
+                </wa-dropdown-item>
+                <wa-divider></wa-divider>
+                <wa-dropdown-item type="checkbox" checked>Emoji Shortcuts</wa-dropdown-item>
+                <wa-dropdown-item type="checkbox" checked>Word Wrap</wa-dropdown-item>
+                <wa-divider></wa-divider>
+                <wa-dropdown-item variant="danger">
+                    <wa-icon slot="icon" name="trash"></wa-icon>
+                    Delete
+                </wa-dropdown-item>
+            </wa-dropdown>
+        </div>
     </div>
-
-    {% for file in files %}
-        <p>{{ file }}</p>
-    {% endfor %}
+    <div id="user-info">
+        <wa-avatar
+            image="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+            label="Avatar of a gray tabby kitten looking down"
+        ></wa-avatar>
+    </div>
 </header>
+<p id="result"></p>
 <!-- <label>Open a PDF</label>
 <input id="file-input" type="file" accept=".pdf" />
 <br>

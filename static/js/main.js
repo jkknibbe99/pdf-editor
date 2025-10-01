@@ -27,36 +27,31 @@ function gisLoaded() {
 
 
 // Create and render a Google Picker object for selecting from Drive.
-function createPicker() {
-    const showPicker = () => {
-        // Replace with your API key and App ID.
-        const picker = new google.picker.PickerBuilder()
-            .addView(google.picker.ViewId.DOCS)
-            .setOAuthToken(accessToken)
-            .setDeveloperKey('AIzaSyDeKzHPZhFyL4S1EbBD58WpsxdRp3qUYgY')
-            .setCallback(pickerCallback)
-            .setAppId('pdf-editor-473716')
-            .build();
-        picker.setVisible(true);
-    }
+async function createPicker() {
+    const res = await fetch("/get-access-token");
+    const { access_token } = await res.json();
 
-    // Request an access token.
-    tokenClient.callback = async (response) => {
-        if (response.error !== undefined) {
-            throw (response);
-        }
-        accessToken = response.access_token;
-        showPicker();
-    };
+    const picker = new google.picker.PickerBuilder()
+        .addView(google.picker.ViewId.PDFS)
+        .enableFeature(google.picker.Feature.NAV_HIDDEN)
+        .setOAuthToken(access_token)
+        .setDeveloperKey(PICKER_API_KEY)
+        .setCallback(pickerCallback)
+        .setAppId(APP_ID)
+        .build();
+    picker.setVisible(true);
+}
 
-    if (accessToken === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({ prompt: 'consent' });
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({ prompt: '' });
+
+// A callback implementation.
+function pickerCallback(data) {
+    let url = 'nothing';
+    if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+    const doc = data[google.picker.Response.DOCUMENTS][0];
+    url = doc[google.picker.Document.URL];
     }
+    const message = `You picked: ${url}`;
+    document.getElementById('result').textContent = message;
 }
 
 

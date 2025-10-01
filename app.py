@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, session
+from flask import Flask, render_template, url_for, redirect, jsonify, request, session
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -12,7 +12,7 @@ app.secret_key = 'dev-secret-key'  # Used for session cookies TODO: create stron
 CREDENTIALS_FILEPATH = 'oauthCredentials.json'
 
 # Google Drive API scopes
-SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
 @app.route('/')
@@ -55,6 +55,21 @@ def oauthCallback():
     creds = flow.credentials
     session['credentials'] = creds_to_dict(creds)
     return redirect(url_for('index'))
+
+
+@app.route("/get-access-token")
+def get_access_token():
+    if 'credentials' not in session:
+        return jsonify({"error": "Not authorized"}), 401
+
+    creds = google.oauth2.credentials.Credentials(**session['credentials'])
+
+    # Refresh if expired
+    if creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+        session['credentials'] = creds_to_dict(creds)
+
+    return jsonify({"access_token": creds.token})
 
 
 def creds_to_dict(creds):
