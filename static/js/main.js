@@ -47,14 +47,11 @@ async function createPicker() {
 function pickerCallback(data) {
     let url = 'nothing';
     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-    const doc = data[google.picker.Response.DOCUMENTS][0];
-    url = doc[google.picker.Document.URL];
+        const doc = data[google.picker.Response.DOCUMENTS][0];
+        url = doc[google.picker.Document.URL];
+        const pdfUrl = 
+        pdfjsLib.getDocument(pdfUrl)
     }
     const message = `You picked: ${url}`;
     document.getElementById('result').textContent = message;
 }
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector('#openBtn').addEventListener('click', createPicker);
-});

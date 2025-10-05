@@ -12,9 +12,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}" />
 
 <script>
-    const access_token_url = '{{ url_for("get_access_token") }}';
     const PICKER_API_KEY = 'AIzaSyDeKzHPZhFyL4S1EbBD58WpsxdRp3qUYgY';
     const APP_ID = 'pdf-editor-473716';
+    const access_token_url = '{{ url_for("get_access_token") }}';
+    const auth = () => document.location = `{{ url_for('auth') }}`
+    const logout = () => document.location = `{{ url_for('logout') }}`
 </script>
 
 <!-- Main JS -->
@@ -28,7 +30,11 @@
     <div>
          <img width="45" src="{{ url_for('static', filename='images/logo.svg')}}" />
         <div id="navbar">
-            <wa-button id="openBtn">Open</wa-button>
+            {% if auth %}
+                <wa-button id="openBtn" onclick="createPicker()">Open</wa-button>
+            {% else %}
+                <wa-button id="openBtn" onclick="auth()">Open</wa-button>
+            {% endif %}
             <wa-dropdown>
                 <wa-button slot="trigger">File</wa-button>
 
@@ -62,10 +68,15 @@
         </div>
     </div>
     <div id="user-info">
-        <wa-avatar
-            image="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
-            label="Avatar of a gray tabby kitten looking down"
-        ></wa-avatar>
+        {% if auth %}
+            <wa-avatar
+                image="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+                label="Avatar of a gray tabby kitten looking down"
+            ></wa-avatar>
+            <wa-button onclick="logout()">Logout</wa-button>
+        {% else %}
+            <wa-button onclick="auth()">Sign In</wa-button>
+        {% endif %}
     </div>
 </header>
 <p id="result"></p>
