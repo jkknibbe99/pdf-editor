@@ -21,6 +21,8 @@ SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
 ]
 
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'  # To allow token refresh with changed scopes. TODO: need to figure out better way to avoid warnings
+
 
 @app.route('/')
 def index():
@@ -52,14 +54,6 @@ def oauthCallback():
     authorization_response = request.url
     flow.fetch_token(authorization_response=authorization_response)
     creds = flow.credentials
-    creds = google.oauth2.credentials.Credentials(
-        creds.token,
-        refresh_token=creds.refresh_token,
-        token_uri=creds.token_uri,
-        client_id=creds.client_id,
-        client_secret=creds.client_secret,
-        scopes=SCOPES
-    )
     session['credentials'] = creds_to_dict(creds)
     return redirect(url_for('index'))
 
