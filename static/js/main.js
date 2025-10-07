@@ -4,18 +4,18 @@ let pickerInited = false;
 let gisInited = false;
 
 
+/**
+ * Google Picker API setup
+ */
+
 // Use the API Loader script to load google.picker.
 function onApiLoad() {
-    gapi.load('picker', onPickerApiLoad);
+    gapi.load('picker', () => { pickerInited = true; });
 }
 
 
-function onPickerApiLoad() {
-    pickerInited = true;
-}
-
-
-function gisLoaded() {
+// Runs when the Google Identity Services library is loaded.
+function onGisLoad() {
     // Replace with your client ID and required scopes.
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: '175573797619-c2pe8t5k6opqmmc89feo4gt3720lk471.apps.googleusercontent.com',
@@ -44,14 +44,12 @@ async function createPicker() {
 
 
 // A callback implementation.
-function pickerCallback(data) {
-    let url = 'nothing';
+async function pickerCallback(data) {
+    document.getElementById('result').textContent = data[google.picker.Response.ACTION];
     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
         const doc = data[google.picker.Response.DOCUMENTS][0];
-        url = doc[google.picker.Document.URL];
-        const pdfUrl = 
-        pdfjsLib.getDocument(pdfUrl)
+        const file_id = doc[google.picker.Document.ID];
+        const pdf_file = await fetch(`${download_url}${file_id}`);
+        display_pdf(pdf_file, document.querySelector('#pdf-canvas'));
     }
-    const message = `You picked: ${url}`;
-    document.getElementById('result').textContent = message;
 }

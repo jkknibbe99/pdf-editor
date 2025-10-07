@@ -15,16 +15,19 @@
     const PICKER_API_KEY = 'AIzaSyDeKzHPZhFyL4S1EbBD58WpsxdRp3qUYgY';
     const APP_ID = 'pdf-editor-473716';
     const access_token_url = '{{ url_for("get_access_token") }}';
-    const auth = () => document.location = `{{ url_for('auth') }}`
-    const logout = () => document.location = `{{ url_for('logout') }}`
+    const download_url = '{{ url_for("download_file", file_id="") }}';
+    const auth = () => document.location = `{{ url_for('auth') }}`;
+    const logout = () => document.location = `{{ url_for('logout') }}`;
 </script>
+
+<script type="module" src="{{ url_for('static', filename='js/pdfLoad.js') }}"></script>
 
 <!-- Main JS -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-<!-- Google API Loader script -->
+<!-- Google API Loader scripts -->
 <script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
-<script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+<script async defer src="https://accounts.google.com/gsi/client" onload="onGisLoad()"></script>
 
 <header>
     <div>
@@ -82,7 +85,8 @@
 <p id="result"></p>
 <!-- <label>Open a PDF</label>
 <input id="file-input" type="file" accept=".pdf" />
-<br>
-<canvas id="pdf-canvas"></canvas> -->
+<br> -->
+
+<canvas id="pdf-canvas"></canvas>
 
 {% endblock %}
