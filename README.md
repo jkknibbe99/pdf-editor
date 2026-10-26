@@ -1,6 +1,29 @@
 # PDF Editor
 
-## Steps to run
+A browser-based PDF viewer with measurement tools: open a local PDF, set a scale
+(draw a known line, or enter a drawing ratio like 1:48), and measure distances
+and areas. Continuous multi-page scroll, fit-to-width, zoom, and Shift to lock a
+segment horizontal/vertical.
+
+## Use it with no server (recommended)
+
+Just open **`standalone.html`** in a browser (double-click it). It's fully
+self-contained — pdf.js is embedded, nothing is uploaded, and it works offline.
+Click **Open Local PDF** to begin.
+
+The Google Drive integration is the only feature that needs the Flask server
+below; everything else is in the standalone file.
+
+### Rebuilding the standalone
+`standalone.html` is generated from the code in `static/js/`. After changing
+those files, regenerate it with:
+```
+python make_standalone.py
+```
+
+## Run the Flask app (for Google Drive integration)
+
+### Steps to run
 1. Create python virtual environment
 ```
 python -m venv .

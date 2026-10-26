@@ -83,10 +83,76 @@
     </div>
 </header>
 <p id="result"></p>
-<!-- <label>Open a PDF</label>
-<input id="file-input" type="file" accept=".pdf" />
-<br> -->
 
-<canvas id="pdf-canvas"></canvas>
+<input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
+
+<div id="toolbar">
+    <wa-button size="small" onclick="document.getElementById('file-input').click()">
+        <wa-icon slot="start" name="folder-open"></wa-icon>
+        Open Local PDF
+    </wa-button>
+
+    <span class="tb-sep"></span>
+
+    <wa-button size="small" data-tool="calibrate" onclick="PDFMeasure.setMode('calibrate')">Set Scale</wa-button>
+    <span class="readout">or 1 :</span>
+    <wa-input id="ratio-input" type="number" min="0" step="any" size="small" placeholder="48" style="width: 5.5rem"></wa-input>
+    <wa-button size="small" onclick="applyRatio()">Apply</wa-button>
+    <wa-select id="unit-select" size="small" value="ft" style="width: 7rem">
+        <wa-option value="ft">feet</wa-option>
+        <wa-option value="in">inches</wa-option>
+        <wa-option value="yd">yards</wa-option>
+        <wa-option value="m">meters</wa-option>
+        <wa-option value="cm">cm</wa-option>
+        <wa-option value="mm">mm</wa-option>
+    </wa-select>
+    <span id="scale-readout" class="readout">Scale: not set</span>
+
+    <span class="tb-sep"></span>
+
+    <wa-button size="small" data-tool="distance" onclick="PDFMeasure.setMode('distance')">Measure Distance</wa-button>
+    <wa-button size="small" data-tool="area" onclick="PDFMeasure.setMode('area')">Measure Area</wa-button>
+    <wa-button size="small" data-tool="none" onclick="PDFMeasure.setMode('none')">Scroll / Off</wa-button>
+    <wa-button size="small" variant="danger" onclick="PDFMeasure.clearAll()">Clear All</wa-button>
+
+    <span class="tb-sep"></span>
+
+    <wa-button size="small" onclick="pdfPrevPage()" title="Previous page">◀</wa-button>
+    <span id="page-indicator" class="readout">– / –</span>
+    <wa-button size="small" onclick="pdfNextPage()" title="Next page">▶</wa-button>
+
+    <span class="tb-sep"></span>
+
+    <wa-button size="small" onclick="pdfSetZoom(pdfGetZoom() - 0.25)">−</wa-button>
+    <span id="zoom-readout" class="readout">—</span>
+    <wa-button size="small" onclick="pdfSetZoom(pdfGetZoom() + 0.25)">+</wa-button>
+    <wa-button size="small" onclick="pdfFitToWidth()">Fit Width</wa-button>
+</div>
+
+<p class="hint">Tip: click points and double-click (or press Enter) to finish. Hold Shift to lock a segment horizontal/vertical. Esc cancels.</p>
+
+<div id="pages-container"></div>
+
+<div id="measure-list"></div>
+
+<script>
+    // Wire the local file input to the pdf.js loader.
+    document.getElementById('file-input').addEventListener('change', (evt) => {
+        display_pdf_local(evt);
+        evt.target.value = '';  // allow re-opening the same file
+    });
+
+    // Apply a manually-entered drawing ratio (1 : N).
+    function applyRatio() {
+        const el = document.getElementById('ratio-input');
+        const n = parseFloat(el.value);
+        if (!(n > 0)) { el.focus(); return; }
+        PDFMeasure.setRatio(n);
+    }
+    document.getElementById('ratio-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyRatio();
+    });
+</script>
+<script src="{{ url_for('static', filename='js/measure.js') }}"></script>
 
 {% endblock %}
