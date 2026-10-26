@@ -50,6 +50,6 @@ async function pickerCallback(data) {
         const doc = data[google.picker.Response.DOCUMENTS][0];
         const file_id = doc[google.picker.Document.ID];
         const pdf_file = await fetch(`${download_url}${file_id}`);
-        display_pdf(pdf_file, document.querySelector('#pdf-canvas'));
+        display_pdf(pdf_file);
     }
 }

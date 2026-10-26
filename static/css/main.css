@@ -1,6 +1,197 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow: hidden; /* the viewer area scrolls, not the whole page */
+}
+
+/* Full-height app column: header + toolbar stay fixed, viewer scrolls. */
+main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
 header {
-    padding: 10px;
+    padding: 3px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex: 0 0 auto;
+}
+
+header img {
+    width: 26px !important;
+    height: auto;
+}
+
+/* Put the logo inline with the Open/File buttons instead of stacked above. */
+header > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+header #navbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#result {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+/* ---- Measurement toolbar ---- */
+#toolbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 4px;
+    border-top: 1px solid var(--wa-color-neutral-border, #444);
+    border-bottom: 1px solid var(--wa-color-neutral-border, #444);
+    margin: 2px 0;
+    background: var(--wa-color-surface-default, #131316);
+    /* Shrink the Web Awesome small controls a bit more to save height. */
+    --wa-form-control-height-small: 30px;
+    font-size: 0.85rem;
+}
+
+#toolbar wa-button::part(base) {
+    min-height: 28px;
+    height: 28px;
+    padding-inline: 8px;
+}
+
+#toolbar .tb-sep {
+    width: 1px;
+    align-self: stretch;
+    background: var(--wa-color-neutral-border, #555);
+    margin: 0 4px;
+}
+
+#toolbar .readout {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+/* Highlight the active measurement tool. */
+#toolbar wa-button[data-active]::part(base) {
+    outline: 2px solid var(--wa-color-brand-fill-loud, #4dabf7);
+    outline-offset: 1px;
+}
+
+.hint {
+    font-size: 0.72rem;
+    opacity: 0.6;
+    margin: 2px 0;
+    flex: 0 0 auto;
+}
+
+/* ---- Stacked pages (the only scrolling area) ---- */
+#pages-container {
+    flex: 1 1 auto;
+    overflow: auto;          /* scrolls vertically AND horizontally */
+    position: relative;      /* offsetParent for scroll-anchor math */
+    display: flex;
+    flex-direction: column;
+    /* "safe": center while the page fits, but fall back to left-align when a
+       page is wider than the viewport so its left edge stays scrollable. */
+    align-items: safe center;
+    gap: 16px;
+    padding: 12px 0 48px;
+}
+
+.page-wrap {
+    position: relative;
+    width: fit-content;
+    line-height: 0;
+    background: #fff;   /* placeholder look before a page's bitmap renders */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.page-wrap .pdf-canvas {
+    display: block;
+}
+
+.page-wrap .overlay-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* enabled by JS when a tool is active */
+}
+
+/* ---- Measurement results (floating, stays visible while scrolling) ---- */
+#measure-list {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: 260px;
+    max-height: 45vh;
+    overflow-y: auto;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    background: var(--wa-color-surface-raised, #1b1b1f);
+    border: 1px solid var(--wa-color-neutral-border, #444);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+#measure-list .measure-empty {
+    opacity: 0.6;
+}
+
+#measure-list .measure-page {
+    font-weight: 600;
+    opacity: 0.8;
+    margin: 0 0 4px;
+}
+
+#measure-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 420px;
+}
+
+#measure-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--wa-color-neutral-border, #333);
+}
+
+#measure-list .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+#measure-list .dot.distance { background: #4dabf7; }
+#measure-list .dot.area { background: #51cf66; }
+
+#measure-list .del-measure {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.6;
+}
+
+#measure-list .del-measure:hover {
+    opacity: 1;
+    color: #ff6b6b;
 }
