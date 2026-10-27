@@ -6,7 +6,3 @@ pyvenv.cfg
 
 # pdf.js
 static/js/pdfjs-5.4.149-dist
-
-# Oauth
-oauthCredentials.json
-token.json

@@ -9,19 +9,20 @@ segment horizontal/vertical.
 
 Just open **`standalone.html`** in a browser (double-click it). It's fully
 self-contained — pdf.js is embedded, nothing is uploaded, and it works offline.
-Click **Open Local PDF** to begin.
-
-The Google Drive integration is the only feature that needs the Flask server
-below; everything else is in the standalone file.
+Click **Open Local PDF** to begin. This is the same thing published via GitHub
+Pages from the `docs/` folder.
 
 ### Rebuilding the standalone
-`standalone.html` is generated from the code in `static/js/`. After changing
-those files, regenerate it with:
+`standalone.html` (and `docs/index.html`) are generated from the code in
+`static/js/`. After changing those files, regenerate them with:
 ```
 python make_standalone.py
 ```
 
-## Run the Flask app (for Google Drive integration)
+## Run the Flask app (optional)
+
+This is just a thin local dev server that serves the same tool from
+`templates/index.html`; the standalone file above does everything without it.
 
 ### Steps to run
 1. Create python virtual environment

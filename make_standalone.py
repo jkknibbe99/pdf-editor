@@ -3,8 +3,8 @@ Build a single, self-contained standalone.html that runs with no server.
 
 It inlines pdf.js + its worker as base64 blob modules (blob URLs bypass the
 browser's block on ES modules loaded from file://), reuses the measurement and
-PDF-loading code from static/js/, uses plain HTML controls (no Web Awesome, no
-internet), and drops the Google Drive integration (that part needs Flask).
+PDF-loading code from static/js/, and uses plain HTML controls (no Web Awesome,
+no internet).
 
 Run:  python make_standalone.py
 Output: standalone.html in the project root. Double-click it to use the tool.
